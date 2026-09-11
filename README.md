@@ -81,5 +81,4 @@ Enable `configs/lab_data.yaml`, point `path` at a CSV matching `data/lab/lab_dat
 ## Citation / references
 
 - Chan et al., *Nat Nanotechnol* (2025) — COMET (methodology inspiration; LNP multi-component model).
-- Carver Trust proposal — radioprotectant aims (DNA protection + ROS scavenging).
 - ChEMBL — public bioactivity source for stage-1 proxies.
