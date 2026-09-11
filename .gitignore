@@ -1,0 +1,47 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+dist/
+build/
+.venv/
+venv/
+.env
+
+# Data & artifacts
+data/raw/**
+!data/raw/.gitkeep
+data/processed/**
+!data/processed/.gitkeep
+data/interim/
+outputs/
+runs/
+*.pkl
+*.joblib
+*.pt
+*.ckpt
+
+# Generated CSVs everywhere except fixtures, demo library, lab template
+*.csv
+!tests/fixtures/**/*.csv
+!data/external/**/*.csv
+!data/lab/**/*.csv
+
+# IDE / OS
+.DS_Store
+.idea/
+.vscode/
+*.swp
+
+# Coverage
+.coverage
+htmlcov/
+.pytest_cache/
+
+# Large vendor dumps (Enamine REAL, ChEMBL sqlite, …)
+*.cxsmiles
+*.cxsmiles.bz2
+*.db
+chembl_36_sqlite/
+2026.01_Enamine_REAL_DB_*/

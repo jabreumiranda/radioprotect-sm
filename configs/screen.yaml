@@ -1,0 +1,48 @@
+# Multi-objective ranking for purchasable hit selection.
+# Weights are explicit hypotheses for prioritization — not biological ground truth.
+#
+# Screen writes THREE Aim-aligned hit lists (plus a joint alias):
+#   - hits_dna_binding.csv     → Aim 1 only (+ cytotox penalty)
+#   - hits_ros_scavenging.csv  → Aim 2 only (+ cytotox penalty)
+#   - hits_dna_and_ros.csv     → Aim 1 + Aim 2 jointly (+ cytotox penalty)
+#   - hits_for_purchase.csv    → alias of the joint list (backward compatible)
+
+library:
+  # Stratified ~50k sample from Enamine REAL Sample 13.6M (see scripts/build_enamine_screen_library.py).
+  # Fallback demo: data/external/demo_purchasable_library.csv
+  path: data/external/enamine_real_50k.csv
+  id_col: catalog_id
+  smiles_col: smiles
+  vendor_col: vendor
+
+filters:
+  max_heavy_atoms: 50
+  min_heavy_atoms: 8
+  max_molwt: 600
+  min_molwt: 150
+  max_logp: 5.5
+  require_rdkit_sanitize: true
+
+ranking:
+  weights:
+    dna_binding: 1.0      # Aim 1 — higher better
+    ros_scavenging: 1.0  # Aim 2 — higher better
+    cytotox: -0.5        # safety — higher predicted potency = more toxic → penalize (all lists)
+  uncertainty_penalty: 0.25  # subtract weight * ensemble_std (mean over tasks in that list)
+  zscore_within_library: true
+
+diversity:
+  fingerprint: morgan
+  n_bits: 2048
+  radius: 2
+  tanimoto_threshold: 0.60
+  # Cap per hit list. With the demo library (~57), you still get ≪ this.
+  max_hits: 5000
+
+output:
+  scores_csv: outputs/screen_scores.csv
+  hits:
+    dna_binding: outputs/hits_dna_binding.csv
+    ros_scavenging: outputs/hits_ros_scavenging.csv
+    dna_and_ros: outputs/hits_dna_and_ros.csv
+  hits_csv: outputs/hits_for_purchase.csv  # alias of dna_and_ros

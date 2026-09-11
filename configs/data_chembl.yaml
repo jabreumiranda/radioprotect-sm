@@ -1,0 +1,109 @@
+# Versioned ChEMBL extraction filters for multitask proxies.
+# These are PROXY labels aligned with Aims 1/2 — NOT direct clinical radioprotection.
+
+chembl_release: "36"
+page_size: 1000
+# Expanded stage-1 pull (was 5000). Prefer local SQLite when available.
+max_records_per_task: 25000
+sqlite_path: chembl_36_sqlite/chembl_36/chembl_36_sqlite/chembl_36.db
+
+tasks:
+  dna_binding:
+    description: >
+      Aim 1 proxy: nucleic-acid / DNA-associated binding bioactivity (pChEMBL).
+      Not equivalent to Dsup-like radioprotection.
+    prefer_pchembl: true
+    target_types:
+      - NUCLEIC-ACID
+    assay_type: B
+    standard_types:
+      - Ki
+      - Kd
+      - IC50
+      - EC50
+    target_name_keywords:
+      - DNA
+      - nucleic
+      - duplex
+      - intercalat
+      - groove
+    min_pchembl: 4.0
+
+  ros_scavenging:
+    description: >
+      Aim 2 proxy: antioxidant / ROS-scavenging style assays from assay descriptions.
+      Not equivalent to in-tissue radioprotection.
+    prefer_pchembl: true
+    assay_type: null  # search by description keywords
+    assay_description_keywords:
+      - DPPH
+      - ABTS
+      - superoxide
+      - hydroxyl radical
+      - ORAC
+      - ROS scaveng
+      - antioxidant
+      - free radical scaveng
+    max_assays_per_keyword: 2000
+    standard_types:
+      - IC50
+      - EC50
+      - Potency
+      - Activity
+    min_pchembl: null
+    # When pChEMBL missing, convert IC50-like uM to -log10(M) with documented rule
+    allow_standard_value_conversion: true
+
+  cytotox:
+    description: >
+      Safety proxy: cellular cytotoxicity / antiproliferative potency.
+      Used to PENALIZE toxic hits in multi-objective ranking — not a radioprotection label.
+    prefer_pchembl: true
+    assay_type: F
+    standard_types:
+      - IC50
+      - CC50
+      - GI50
+    assay_description_keywords:
+      - cytotox
+      - antiproliferat
+      - cell viability
+      - growth inhibit
+    max_assays_per_keyword: 2000
+    min_pchembl: 4.0
+
+  radioprotection_lit:
+    description: >
+      Sparse auxiliary set: ChEMBL assays mentioning radioprotect / radiation protect.
+      If too small for supervised training, use only as external validation / ranking prior.
+    prefer_pchembl: true
+    assay_description_keywords:
+      - radioprotect
+      - radiation protect
+      - radioprotection
+      - ionizing radiation
+      - gamma radiation
+      - gamma-ray
+    max_assays_per_keyword: 2000
+    standard_types:
+      - IC50
+      - EC50
+      - Activity
+      - Potency
+      - Inhibition
+    min_pchembl: null
+    allow_standard_value_conversion: true
+    train_if_n_ge: 80
+    else_use_as: external_validation
+
+canonicalization:
+  neutralize: false
+  remove_salts: true
+  keep_largest_fragment: true
+  reject_mixtures: true
+  max_heavy_atoms: 80
+  min_heavy_atoms: 5
+
+deduplication:
+  key: inchikey
+  aggregation: median  # per (inchikey, task)

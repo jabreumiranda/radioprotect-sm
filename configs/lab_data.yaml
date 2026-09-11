@@ -1,0 +1,24 @@
+# Schema for FUTURE laboratory experimental data.
+# Do not populate with fabricated values. Leave empty until real assays exist.
+
+enabled: false
+path: null  # e.g. data/lab/radioprotection_assays.csv when available
+
+required_columns:
+  - compound_id
+  - smiles
+  - assay_name
+  - endpoint  # e.g. comet_tail_moment_reduction_pct, gamma_h2ax_foci_reduction_pct
+  - value
+  - units
+  - cell_line
+  - radiation_dose_gy
+  - pretreatment_hours
+  - replicate
+  - measured_at
+  - operator
+  - notes
+
+provenance:
+  data_source: lab
+  # When merging with ChEMBL, keep data_source distinct; never overwrite ChEMBL labels.

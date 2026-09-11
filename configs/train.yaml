@@ -1,0 +1,53 @@
+seed: 42
+ensemble_seeds: [42, 43, 44, 45, 46]
+
+split:
+  strategy: scaffold  # Bemis-Murcko; random only as documented ablation
+  train_frac: 0.70
+  val_frac: 0.10
+  test_frac: 0.20
+  # Tasks used to build the molecule universe for splitting
+  tasks_for_split:
+    - dna_binding
+    - ros_scavenging
+    - cytotox
+
+tasks:
+  - dna_binding
+  - ros_scavenging
+  - cytotox
+  # radioprotection_lit included only if N >= train_if_n_ge from data config
+
+baseline:
+  name: morgan_rf
+  n_bits: 2048
+  radius: 2
+  model: random_forest
+  n_estimators: 300
+  max_depth: null
+  n_jobs: -1
+  min_samples_leaf: 2
+
+chemprop:
+  enabled: auto  # use if chemprop+torch installed, else skip with clear log
+  epochs: 30
+  batch_size: 64
+  hidden_size: 300
+  depth: 3
+  dropout: 0.0
+  learning_rate: 1.0e-4
+
+early_stopping:
+  patience: 5
+  metric: spearman  # mean across available tasks on val
+
+metrics:
+  - spearman
+  - pearson
+  - top10_in_top50
+  - top30_in_top50
+
+paths:
+  processed_dir: data/processed
+  runs_dir: runs
+  reports_dir: outputs/reports

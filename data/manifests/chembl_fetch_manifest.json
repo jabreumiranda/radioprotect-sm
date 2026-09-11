@@ -1,0 +1,42 @@
+{
+  "chembl_release": "36",
+  "config_path": "configs/data_chembl.yaml",
+  "files": {
+    "labels_long": "data\\processed\\labels_long.csv",
+    "labels_wide": "data\\processed\\labels_wide.csv",
+    "radioprotection_lit_external": "data\\processed\\radioprotection_lit_external.csv",
+    "raw_all": "data\\raw\\chembl\\all_tasks_raw.csv",
+    "sha256": {
+      "labels_long": "70c8ebf572d54fed22df4312fb3eb692980c0314362175b77ac4f937c0cc3c08",
+      "labels_wide": "e7d1d40ec899e057b31a2f0ae23724689f8f18d24ab3a4204a61281540f7966f",
+      "raw_all": "016b31a5c0389672a8b6177263f98a256e3a24dd83906c31c49f515f96b34534"
+    }
+  },
+  "max_records_per_task": 25000,
+  "n_long_rows": 13218,
+  "n_molecules_wide": 13136,
+  "notes": [
+    "Labels are ChEMBL proxies, not direct clinical radioprotection endpoints.",
+    "Missing multitask labels are left as NaN (never imputed)."
+  ],
+  "radioprotection_lit_policy": {
+    "else_use_as": "external_validation",
+    "include_in_training": true,
+    "n_molecules": 136,
+    "train_if_n_ge": 80
+  },
+  "raw_record_counts": {
+    "cytotox": 25000,
+    "dna_binding": 2905,
+    "radioprotection_lit": 593,
+    "ros_scavenging": 25000
+  },
+  "retrieved_at": "2026-09-10T21:33:45+00:00",
+  "source": "sqlite:C:\\Users\\jabreumiranda\\Desktop\\project-radioprotection-cursor\\chembl_36_sqlite\\chembl_36\\chembl_36_sqlite\\chembl_36.db",
+  "task_molecule_counts": {
+    "cytotox": 5866,
+    "dna_binding": 888,
+    "radioprotection_lit": 136,
+    "ros_scavenging": 6328
+  }
+}
