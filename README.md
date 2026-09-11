@@ -2,7 +2,7 @@
 
 Stage-1 **small-molecule** pipeline to prioritize **purchasable hits** for laboratory radioprotection testing.
 
-This repository adapts the scientific objectives of the Carver Trust polymer radioprotectant proposal to **small molecules** (not polymers), using **ChEMBL proxy labels** and the methodological discipline of the COMET paper (held-out evaluation, ranking metrics, ensemble, reproducibility) **without** porting COMET’s multi-component formulation architecture.
+This repository adapts the scientific objectives of small molecules, using **ChEMBL proxy labels** and the methodological discipline of the COMET paper (held-out evaluation, ranking metrics, ensemble, reproducibility) **without** porting COMET’s multi-component formulation architecture.
 
 ## Scientific premises (do not change silently)
 
